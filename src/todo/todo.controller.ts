@@ -9,6 +9,7 @@ export class TodoController {
 
   @Get()
   getTodos() {
+    console.log(123);
     return this.todoService.getTodos();
   }
 
