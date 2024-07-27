@@ -2,11 +2,31 @@ version: '3'
 
 services:
   api:
-    build: ./
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "9999:3000"
+      - "3000:3000"
     volumes:
-      - /my-app/node_modules
-      - ./:/my-app
+      - ./src:/app/src
+    depends_on:
+      - mysql
     environment:
       - CHOKIDAR_USEPOLLING=true
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: todo_db
+    volumes:
+      - mysql_data:/var/lib/mysql
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - '8888:8080'
+
+volumes:
+  mysql_data:
